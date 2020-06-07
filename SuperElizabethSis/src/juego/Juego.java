@@ -8,6 +8,11 @@ public class Juego extends InterfaceJuego
 {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
+	private Piso piso;
+	private Obstaculo obstaculo;
+	private Soldado soldado;
+	private Princesa princesa;
+	private BolaDeFuego bolaDeFuego;
 	
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -19,6 +24,11 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar lo que haga falta para el juego
 		// ...
+		this.piso = new Piso();
+		this.obstaculo = new Obstaculo();
+		this.soldado = new Soldado();
+		this.princesa = new Princesa();
+		this.bolaDeFuego = new BolaDeFuego();
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -34,8 +44,17 @@ public class Juego extends InterfaceJuego
 	{
 		// Procesamiento de un instante de tiempo
 		// ...
+		dibujarObjetos();
 		
 
+	}
+	
+	void dibujarObjetos() {
+		this.piso.dibujoPiso(entorno);
+		this.obstaculo.dibujoObstaculo(entorno);
+		this.soldado.dibujoSoldado(entorno);
+		this.princesa.dibujoPrincesa(entorno);
+		this.bolaDeFuego.dibujoBolaDeFuego(entorno);
 	}
 	
 
