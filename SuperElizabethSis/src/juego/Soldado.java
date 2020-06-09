@@ -10,13 +10,11 @@ public class Soldado {
 		private int y;
 		private int ancho;
 		private int largo;
-		private int valorX = 450;
-		private int valorY = 530;
 		private int valorAncho = 56;
 		private int valorLargo = 16;
 		
 		
-		public Soldado() {
+		public Soldado(int valorX, int valorY) {
 			this.x = valorX;
 			this.y = valorY;
 			this.ancho = valorAncho;

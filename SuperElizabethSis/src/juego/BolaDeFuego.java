@@ -9,12 +9,10 @@ public class BolaDeFuego {
 		private int x;
 		private int y;
 		private int diametro;
-		private int valorX = 80;
-		private int valorY = 525;
 		private int valorDiametro = 20;
 		
 		
-		public BolaDeFuego() {
+		public BolaDeFuego(int valorX, int valorY) {
 			this.x = valorX;
 			this.y = valorY;
 			this.diametro = valorDiametro;
