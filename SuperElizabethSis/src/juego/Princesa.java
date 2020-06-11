@@ -5,6 +5,7 @@ import java.awt.Color;
 import entorno.Entorno;
 
 public class Princesa {
+	//To do
 
 		private int x;
 		private int y;
