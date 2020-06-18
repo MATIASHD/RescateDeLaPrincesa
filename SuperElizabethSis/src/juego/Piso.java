@@ -22,6 +22,32 @@ public class Piso {
 		this.largo = valorLargo;
 	}
 	
+	
+	
+	public int getY() {
+		return y;
+	}
+
+
+
+	public int getLargo() {
+		return largo;
+	}
+
+
+
+	public int getX() {
+		return x;
+	}
+
+
+
+	public int getAncho() {
+		return ancho;
+	}
+
+
+
 	void dibujoPiso(Entorno entorno) {
 		entorno.dibujarRectangulo(x, y, largo, ancho, 0, Color.GREEN);
 	}
