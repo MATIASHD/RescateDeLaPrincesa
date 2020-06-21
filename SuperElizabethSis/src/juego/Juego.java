@@ -183,16 +183,6 @@ public class Juego extends InterfaceJuego {
 	public boolean colisionesPriObs() {
 		for (int i = 0; i < obstaculo.length; i++) {
 			if (obstaculo[i] != null) {
-				/*if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
-						+ obstaculo[i].getAncho() / this.dos
-						&& princesa.getX() + princesa.getAncho() / this.dos > obstaculo[i].getX()
-								- obstaculo[i].getAncho() / this.dos
-						&& princesa.getY() - princesa.getAlto() / this.dos < obstaculo[i].getY()
-								+ obstaculo[i].getLargo() / this.dos
-						&& princesa.getY() + princesa.getAlto() / this.dos > obstaculo[i].getY()
-								- obstaculo[i].getLargo() / this.dos) {
-					return true;
-				}*/
 				if(colisionesPriObsX(i) && colisionesPriObsY(i)) {
 					return true;
 				}
@@ -386,13 +376,7 @@ public class Juego extends InterfaceJuego {
 	
 	void moverObstaculo() { /// VER como hacer para que la colicion lo atraiga
 		for (int i = 0; i < obstaculo.length; i++) {
-			if (obstaculo[i] != null) {
-				/*if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
-						+ obstaculo[i].getAncho() / this.dos
-						&& princesa.getX() + princesa.getAncho() / this.dos > obstaculo[i].getX()
-								- obstaculo[i].getAncho() / this.dos) {
-					princesa.mueveObstaculo();
-				}*/
+			if (obstaculo[i] != null) {				
 				if(colisionesPriObsX(i) && colisionesPriPiso() ) {
 					princesa.mueveObstaculo();
 				}
