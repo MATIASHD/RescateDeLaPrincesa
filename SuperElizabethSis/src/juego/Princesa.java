@@ -37,7 +37,7 @@ public class Princesa {
 	}
 
 	public void moverArriba() {
-		this.y -= 120;
+		this.y -= 5;
 	}
 	
 	public void moverAbajo() {

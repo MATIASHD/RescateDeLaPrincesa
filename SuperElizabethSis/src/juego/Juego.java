@@ -5,7 +5,8 @@ import java.util.Random;
 
 import entorno.Entorno;
 import entorno.InterfaceJuego;
-
+//HECHO: Comportamiento de la princesa, correccion de la colicion con el objeto, en el salto, descuento de vidas
+//NO CORREJIDO: COLISION ENTRE BOLA DE FUEGO Y SOLDADO.
 public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
@@ -20,7 +21,7 @@ public class Juego extends InterfaceJuego {
 	// ...
 	///////////// Constantes /////////////////
 	private int cero, puntuacion, vida, tres, fuente, dos, cinco, apareceSoldado, tiempo, tiempoSalto;
-	boolean gameOver, estadoGravedad;
+	boolean gameOver, estadoGravedad, estaEnAire;
 
 	Juego() {
 		// Inicializa el objeto entorno
@@ -50,6 +51,7 @@ public class Juego extends InterfaceJuego {
 		this.tiempoSalto = this.cero;
 		this.apareceSoldado = random.nextInt(100)+1;
 		this.estadoGravedad = false;
+		this.estaEnAire = false;
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -101,8 +103,8 @@ public class Juego extends InterfaceJuego {
 		limiteDePantallaSol();
 		limiteDePantallaObj();
 		colisionesPriObs();
-		colisionesPriSol();
 		colisionesArmSol();
+		colisionesPriSol();	
 		colisionesArmObs();
 		contadorVida();
 		movimientoPrincess();
@@ -143,7 +145,7 @@ public class Juego extends InterfaceJuego {
 	void posicionSoldado() {
 		for (int i = 0; i < soldado.length; i++) {
 			if (soldado[i] == null) {
-				if (this.apareceSoldado == 10) {
+				if (this.apareceSoldado < 5) {
 					soldado[i] = new Soldado(entorno.ancho(), 530);
 				}
 			}
@@ -181,7 +183,7 @@ public class Juego extends InterfaceJuego {
 	public boolean colisionesPriObs() {
 		for (int i = 0; i < obstaculo.length; i++) {
 			if (obstaculo[i] != null) {
-				if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
+				/*if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
 						+ obstaculo[i].getAncho() / this.dos
 						&& princesa.getX() + princesa.getAncho() / this.dos > obstaculo[i].getX()
 								- obstaculo[i].getAncho() / this.dos
@@ -190,11 +192,35 @@ public class Juego extends InterfaceJuego {
 						&& princesa.getY() + princesa.getAlto() / this.dos > obstaculo[i].getY()
 								- obstaculo[i].getLargo() / this.dos) {
 					return true;
+				}*/
+				if(colisionesPriObsX(i) && colisionesPriObsY(i)) {
+					return true;
 				}
 			}
 		}
 		return false;
 	}
+	
+	public boolean colisionesPriObsX(int i) {
+		if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
+				+ obstaculo[i].getAncho() / this.dos
+				&& princesa.getX() + princesa.getAncho() / this.dos > obstaculo[i].getX()
+				- obstaculo[i].getAncho() / this.dos) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean colisionesPriObsY(int i) {
+		if (princesa.getY() - princesa.getAlto() / this.dos < obstaculo[i].getY()
+				+ obstaculo[i].getLargo() / this.dos
+				&& princesa.getY() + princesa.getAlto() / this.dos > obstaculo[i].getY()
+				- obstaculo[i].getLargo() / this.dos) {
+			return true;
+		}
+		return false;
+	}
+		
 	public boolean colisionesPriPiso() {
 				if (princesa.getX() - princesa.getAncho() / this.dos < piso.getX()
 						+ piso.getLargo() / this.dos
@@ -330,14 +356,21 @@ public class Juego extends InterfaceJuego {
 	//////////////////// Movimiento
 
 	void movimientoPrincess() {
-		if (!colisionesPriObs() && limitePrincesaDer() && this.entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+		if (!colisionesPriObs() && limitePrincesaDer() && this.entorno.estaPresionada(entorno.TECLA_DERECHA) && colisionesPriPiso()) {
 			this.princesa.moverDer();
 		}
-		if (!colisionesPriObs() && limitePrincesaIzq() && this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+		if (!colisionesPriObs() && limitePrincesaIzq() && this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && colisionesPriPiso()) {
 			this.princesa.moverIzq();
 		}
-		if (this.entorno.sePresiono(entorno.TECLA_ARRIBA)) {
-			saltar();
+		if (this.estaEnAire == false && this.entorno.sePresiono(entorno.TECLA_ARRIBA) && (colisionesPriPiso() || colisionesPriObs())) {
+			this.estaEnAire = true;			
+		}
+		if(this.estaEnAire) {
+			if(this.princesa.getY() > 380) {
+				saltar();
+			}else {
+				this.estaEnAire = false;
+			}			
 		}
 		if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 			for (int i = 0; i < bolaDeFuego.length; i++) {
@@ -354,10 +387,13 @@ public class Juego extends InterfaceJuego {
 	void moverObstaculo() { /// VER como hacer para que la colicion lo atraiga
 		for (int i = 0; i < obstaculo.length; i++) {
 			if (obstaculo[i] != null) {
-				if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
+				/*if (princesa.getX() - princesa.getAncho() / this.dos < obstaculo[i].getX()
 						+ obstaculo[i].getAncho() / this.dos
 						&& princesa.getX() + princesa.getAncho() / this.dos > obstaculo[i].getX()
 								- obstaculo[i].getAncho() / this.dos) {
+					princesa.mueveObstaculo();
+				}*/
+				if(colisionesPriObsX(i) && colisionesPriPiso() ) {
 					princesa.mueveObstaculo();
 				}
 			}
@@ -365,12 +401,15 @@ public class Juego extends InterfaceJuego {
 	}
 	
 	void gravedad() {
-		if (!colisionesPriPiso() && !colisionesPriObs()) {
+		if (!colisionesPriPiso() && !colisionesPriObs() && !this.estaEnAire) { 
 			this.princesa.moverAbajo();
 		}
 	}
 	void saltar() {
 			this.princesa.moverArriba();
+			if(colisionesPriObs()) {
+				this.princesa.mueveObstaculo();
+			}
 	}
 
 	void visualizaciones() {
@@ -381,8 +420,10 @@ public class Juego extends InterfaceJuego {
 	}
 
 	void contadorVida() {
-		if (colisionesPriSol()) {
-			// this.vida--;
+		if (colisionesPriSol() || this.princesa.getX() < 0) {
+			this.vida--;
+			this.princesa.setX(60);
+			this.princesa.setY(450);
 		}
 		if (this.vida == 0) {
 			this.gameOver = true;
