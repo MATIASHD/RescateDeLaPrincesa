@@ -19,6 +19,7 @@ public class Juego extends InterfaceJuego {
 	private Princesa princesa;
 	private BolaDeFuego[] bolaDeFuego;
 	private Random random;
+	private Nube[] nube;
 	Image fondo;
 
 	// Variables y métodos propios de cada grupo
@@ -38,6 +39,7 @@ public class Juego extends InterfaceJuego {
 		this.princesa = new Princesa();
 		this.bolaDeFuego = new BolaDeFuego[10];
 		this.obstaculo = new Obstaculo[5];
+		this.nube = new Nube[5];
 		this.random = new Random();
 
 		// Constante
@@ -71,7 +73,7 @@ public class Juego extends InterfaceJuego {
 		// Procesamiento de un instante de tiempo
 		// ...
 		if ( this.gameOver != true) {
-			fondo = Herramientas.cargarImagen("fondonubes.gif");
+			fondo = Herramientas.cargarImagen("fondonubes.jpg");
 			entorno.dibujarImagen(fondo, 405, 305, 0);
 			crearObjetos();
 			acciones();
@@ -81,8 +83,8 @@ public class Juego extends InterfaceJuego {
 
 
 		} else {
-			entorno.dibujarImagen(fondo, 405, 305, 0);
 			fondo = Herramientas.cargarImagen("gameover.jpg");
+			entorno.dibujarImagen(fondo, 405, 305, 0);
 			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
 			entorno.escribirTexto("JUEGO TERMINADO", 240, 200);
 			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
@@ -96,6 +98,7 @@ public class Juego extends InterfaceJuego {
 		this.piso.dibujoPiso(entorno);
 		this.princesa.dibujoPrincesa(entorno);
 		dibujarObstaculo();
+		dibujarNube();
 		dibujarSoldado();
 		dibujarBolasDeFuego();
 		visualizaciones();
@@ -104,10 +107,12 @@ public class Juego extends InterfaceJuego {
 	void crearObjetos() {
 		posicionSoldado();
 		posicionObstaculo();
+		posicionNube();
 	}
 
 	void acciones() {
 		moverDerechaObj();
+		moverDerechaNub();
 		moverDerechaSol();
 		limiteDePantallaSol();
 		limiteDePantallaObj();
@@ -187,6 +192,33 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 	}
+///////////////////////// Nube ///////////
+
+	void dibujarNube() {
+		for (int i = 0; i < nube.length; i++) {
+			if (nube[i] != null) {
+				nube[i].dibujoNube(entorno);
+			}
+		}
+	}
+	void posicionNube() {
+		int separacionNube = 1500;
+		for (int i = 0; i < nube.length; i++) {
+			if (nube[i] == null) {
+				nube[i] = new Nube(separacionNube);
+				separacionNube += 850;
+			}
+		}
+	}
+
+	void moverDerechaNub() {
+		for (int i = 0; i < nube.length; i++) {
+			if (nube[i] != null) {
+				nube[i].moverDerecha();
+			}
+		}
+	}
+
 
 	///////////////////////////////// COLISIONES
 	public boolean colisionesPriObs() {
@@ -306,6 +338,15 @@ public class Juego extends InterfaceJuego {
 			if (obstaculo[i] != null) {
 				if (obstaculo[i].getX() < -30) {
 					obstaculo[i].setX(800);
+				}
+			}
+		}
+	}
+	void limiteDePantallaNub() {
+		for (int i = 0; i < nube.length; i++) {
+			if (nube[i] != null) {
+				if (nube[i].getX() < 800) {
+					nube[i].setX(1500);
 				}
 			}
 		}
