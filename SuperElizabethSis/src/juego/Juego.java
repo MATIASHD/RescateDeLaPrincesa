@@ -1,12 +1,9 @@
 package juego;
 
 import java.awt.Color;
-
-import java.awt.Font;
 import java.util.Random;
-import java.awt.Image;
+
 import entorno.Entorno;
-import entorno.Herramientas;
 import entorno.InterfaceJuego;
 //HECHO: Comportamiento de la princesa, correccion de la colicion con el objeto, en el salto, descuento de vidas
 //NO CORREJIDO: COLISION ENTRE BOLA DE FUEGO Y SOLDADO.
@@ -19,7 +16,6 @@ public class Juego extends InterfaceJuego {
 	private Princesa princesa;
 	private BolaDeFuego[] bolaDeFuego;
 	private Random random;
-	Image fondo;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -71,22 +67,17 @@ public class Juego extends InterfaceJuego {
 		// Procesamiento de un instante de tiempo
 		// ...
 		if ( this.gameOver != true) {
-			fondo = Herramientas.cargarImagen("fondonubes.gif");
-			entorno.dibujarImagen(fondo, 405, 305, 0);
 			crearObjetos();
 			acciones();
 			dibujarObjetos();
 			this.tiempo++;
 			this.tiempoSalto++;
 
-
 		} else {
-			entorno.dibujarImagen(fondo, 405, 305, 0);
-			fondo = Herramientas.cargarImagen("gameover.jpg");
-			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
-			entorno.escribirTexto("JUEGO TERMINADO", 240, 200);
-			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
-			entorno.escribirTexto("Puntos: " + this.puntuacion, 240, 300);
+			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.BLUE);
+			entorno.escribirTexto("JUEGO TERMINADO", 240, 50);
+			entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.BLUE);
+			entorno.escribirTexto("Puntos: " + this.puntuacion, 240, 200);
 
 		}
 

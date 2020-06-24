@@ -1,8 +1,7 @@
 package juego;
 
+import java.awt.Color;
 
-import entorno.Herramientas;
-import java.awt.Image;
 import entorno.Entorno;
 
 public class Princesa {
@@ -16,14 +15,12 @@ public class Princesa {
 	private int valorY = 500;
 	private int valorAlto = 56;
 	private int valorAncho = 16;
-	Image imagen;
 
 	public Princesa() {
 		this.x = valorX;
 		this.y = valorY;
 		this.ancho = valorAncho;
 		this.alto = valorAlto;
-		this.imagen=Herramientas.cargarImagen("princesa.gif");
 	}
 
 
@@ -87,7 +84,7 @@ public class Princesa {
 	}
 
 	void dibujoPrincesa(Entorno entorno) {
-		entorno.dibujarImagen(imagen, x, y, 0);
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.PINK);
 	}
 
 }

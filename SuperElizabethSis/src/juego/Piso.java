@@ -1,7 +1,7 @@
 package juego;
 
-import entorno.Herramientas;
-import java.awt.Image;
+import java.awt.Color;
+
 import entorno.Entorno;
 
 public class Piso {
@@ -13,7 +13,6 @@ public class Piso {
 	private int valorY = 587;
 	private int valorAncho = 50;
 	private int valorLargo = 820;
-	Image imagen;
 	
 	
 	public Piso() {
@@ -21,7 +20,6 @@ public class Piso {
 		this.y = valorY;
 		this.ancho = valorAncho;
 		this.largo = valorLargo;
-		this.imagen=Herramientas.cargarImagen("piso.png");
 	}
 	
 	
@@ -51,6 +49,6 @@ public class Piso {
 
 
 	void dibujoPiso(Entorno entorno) {
-		entorno.dibujarImagen(imagen, x, y, 0);
+		entorno.dibujarRectangulo(x, y, largo, ancho, 0, Color.GREEN);
 	}
 }
