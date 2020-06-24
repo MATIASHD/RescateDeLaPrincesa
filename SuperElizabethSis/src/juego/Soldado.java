@@ -1,7 +1,7 @@
 package juego;
 
-import java.awt.Color;
-
+import entorno.Herramientas;
+import java.awt.Image;
 import entorno.Entorno;
 
 public class Soldado {
@@ -12,6 +12,7 @@ public class Soldado {
 		private int largo;
 		private int valorAlto = 56;
 		private int valorAncho = 16;
+		Image imagen;
 		
 		
 		public Soldado(int valorX, int valorY) {
@@ -19,6 +20,7 @@ public class Soldado {
 			this.y = valorY;
 			this.alto = valorAlto;
 			this.largo = valorAncho;
+			this.imagen=Herramientas.cargarImagen("soldado.gif");
 		}
 		
 		void moverDerecha(){
@@ -50,6 +52,6 @@ public class Soldado {
 		}
 
 		void dibujoSoldado(Entorno entorno) {
-			entorno.dibujarRectangulo(this.x, this.y, this.largo, this.alto, 0, Color.CYAN);
+			entorno.dibujarImagen(imagen, x, y, 0);
 		}
 }

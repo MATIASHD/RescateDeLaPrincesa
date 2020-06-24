@@ -1,7 +1,7 @@
 package juego;
 
-import java.awt.Color;
-
+import entorno.Herramientas;
+import java.awt.Image;
 import entorno.Entorno;
 
 public class Obstaculo {
@@ -12,12 +12,14 @@ public class Obstaculo {
 	private int valorY = 534;
 	private int valorAncho = 56;
 	private int valorLargo = 56;
+	Image imagen;
 	
 	public Obstaculo(int valorX) {
 		this.x = valorX;
 		this.y = valorY;
 		this.ancho = valorAncho;
 		this.largo = valorLargo;
+		this.imagen=Herramientas.cargarImagen("obstaculo.jpg");
 	}
 	
 	void moverDerecha() {
@@ -58,6 +60,6 @@ public class Obstaculo {
 	}
 
 	void dibujoObstaculo(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, largo, ancho, 0, Color.GRAY);
+		entorno.dibujarImagen(imagen, x, y, 0);
 	}
 }
