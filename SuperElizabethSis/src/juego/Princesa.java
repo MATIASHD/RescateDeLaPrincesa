@@ -47,9 +47,7 @@ public class Princesa {
 		this.y += 5;
 	}
 
-	public void Poder() {
-
-	}
+	
 	public BolaDeFuego disparar() {
 		return new BolaDeFuego(this.x, this.y);
 	}
