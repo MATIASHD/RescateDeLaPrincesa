@@ -27,6 +27,20 @@ public class Soldado {
 			this.x -= 3;
 		}
 		
+		void moverDerechaObs(){
+			this.x -= 2;
+		}
+		
+		public void moverArriba() {
+			this.y -= 1;
+		}
+		
+		public void moverAbajo() {
+			if(this.y < 530) {
+				this.y += 1;
+			}
+			
+		}
 		public int getX() {
 			return x;
 		}

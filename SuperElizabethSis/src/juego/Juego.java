@@ -120,6 +120,8 @@ public class Juego extends InterfaceJuego {
 		colisionesArmSol();
 		colisionesPriSol();	
 		colisionesArmObs();
+		colisionesObsSolX();
+		colisionesObsSolY();
 		contadorVida();
 		movimientoPrincess();
 		limiteBolaDeFuego();
@@ -130,11 +132,11 @@ public class Juego extends InterfaceJuego {
 
 	///////////////////////////////// Obstaculo
 	void posicionObstaculo() {
-		int separacionObstaculo = 800;
+		int separacionObstaculo = 500;
 		for (int i = 0; i < obstaculo.length; i++) {
 			if (obstaculo[i] == null) {
 				obstaculo[i] = new Obstaculo(separacionObstaculo);
-				separacionObstaculo += 165;
+				separacionObstaculo += 300;
 			}
 		}
 	}
@@ -159,7 +161,7 @@ public class Juego extends InterfaceJuego {
 	void posicionSoldado() {
 		for (int i = 0; i < soldado.length; i++) {
 			if (soldado[i] == null) {
-				if (this.apareceSoldado < 5) {
+				if (this.apareceSoldado == 10) {
 					soldado[i] = new Soldado(entorno.ancho(), 530);
 				}
 			}
@@ -176,8 +178,19 @@ public class Juego extends InterfaceJuego {
 
 	void moverDerechaSol() {
 		for (int i = 0; i < soldado.length; i++) {
-			if (soldado[i] != null) {
-				soldado[i].moverDerecha();
+			
+			if (soldado[i] != null ) {
+				if(!colisionesObsSolX()) {
+					soldado[i].moverDerecha();
+					soldado[i].moverAbajo();
+				}else {
+					if(colisionesObsSolY()) {
+						soldado[i].moverArriba();
+						soldado[i].moverDerechaObs();
+					}else {
+						soldado[i].moverDerecha();
+					}
+				}				
 			}
 		}
 	}
@@ -331,7 +344,48 @@ public class Juego extends InterfaceJuego {
 		}
 		return false;
 	}
+	
+	
+	public boolean colisionesObsSolX() {
+		for (int i = 0; i < soldado.length; i++) {
+			for (int j = 0; j < obstaculo.length; j++) {
+				if (obstaculo[j] != null) {
+					if (soldado[i] != null) {
+						if (obstaculo[j].getX() + obstaculo[j].getAncho() / this.dos > soldado[i].getX() - soldado[i].getLargo() / this.dos
+								&& obstaculo[j].getX() - obstaculo[j].getAncho() / this.dos < soldado[i].getX() + soldado[i].getLargo() / this.dos ) {
+							
+							return true;
+						}
+					}
 
+				}
+
+			}
+
+		}
+		return false;
+	}
+	
+	public boolean colisionesObsSolY() {
+		for (int i = 0; i < soldado.length; i++) {
+			for (int j = 0; j < obstaculo.length; j++) {
+				if (obstaculo[j] != null) {
+					if (soldado[i] != null) {
+						if (obstaculo[j].getY() + obstaculo[j].getLargo() / this.dos > soldado[i].getY() - soldado[i].getAlto() / this.dos
+								&& obstaculo[j].getY() - obstaculo[j].getLargo() / this.dos < soldado[i].getY() + soldado[i].getAlto() / this.dos ) {
+							
+							return true;
+						}
+					}
+
+				}
+
+			}
+
+		}
+		return false;
+	}
+	
 	///////////////////////////////// Escena
 	void limiteDePantallaObj() {
 		for (int i = 0; i < obstaculo.length; i++) {
