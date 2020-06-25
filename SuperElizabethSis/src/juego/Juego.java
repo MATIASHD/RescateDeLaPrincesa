@@ -83,7 +83,6 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		// Procesamiento de un instante de tiempo
 		// ...
-		System.out.println(esGanador());
 
 		if (!esGanador() && this.gameOver != true) {
 			fondo = Herramientas.cargarImagen("fondonubes.jpg");
@@ -185,10 +184,13 @@ public class Juego extends InterfaceJuego {
 			if (soldado[i] == null) {
 				if (this.apareceSoldado == 10) {
 					soldado[i] = new Soldado(entorno.ancho(), 530);
-					return;
+					
 				}
+				
 			}
+			return;
 		}
+	
 
 	}
 
@@ -309,6 +311,7 @@ public class Juego extends InterfaceJuego {
 						&& princesa.getY() + princesa.getAlto() / this.dos > soldado[i].getY()
 								- soldado[i].getLargo() / this.dos) {
 					soldado[i] = null;
+					this.vida--;
 					return true;
 				}
 			}
@@ -544,10 +547,11 @@ public class Juego extends InterfaceJuego {
 	}
 
 	void contadorVida() {
-		if (colisionesPriSol() || this.princesa.getX() < 0) {
+		if ( this.princesa.getX() < 0) {
 			this.vida--;
 			this.princesa.setX(60);
 			this.princesa.setY(450);
+			System.out.println("Estoy aca");
 		}
 		if (this.vida == 0) {
 			this.gameOver = true;
