@@ -24,7 +24,7 @@ public class Juego extends InterfaceJuego {
 
 	// Variables y métodos propios de cada grupo
 	// ...
-	///////////// Constantes /////////////////
+	/////////////  /////////////////
 	private int dos, tiempoDeVida;
 	private int puntuacion;
 	private int tiempo;
@@ -64,7 +64,7 @@ public class Juego extends InterfaceJuego {
 		this.puntuacion = this.cero;
 		this.vida = this.tres;
 		this.gameOver = false;
-		
+
 		this.estadoGravedad = false;
 		this.estaEnAire = false;
 		this.gano = this.tiempoDeVida;
@@ -101,7 +101,6 @@ public class Juego extends InterfaceJuego {
 				entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
 				entorno.escribirTexto("Puntos: " + this.puntuacion, 100, 300);
 			} else {
-
 				fondo = Herramientas.cargarImagen("gameover.jpg");
 				entorno.dibujarImagen(fondo, 405, 305, 0);
 				entorno.cambiarFont("Copperplate Gothic Bold", this.fuente, Color.RED);
@@ -148,7 +147,7 @@ public class Juego extends InterfaceJuego {
 		limiteBolaDeFuego();
 		limiteTiempo();
 		gravedad();
-		terminaJuego();
+		//terminaJuego();
 	}
 
 	///////////////////////////////// Obstaculo
@@ -184,13 +183,11 @@ public class Juego extends InterfaceJuego {
 			if (soldado[i] == null) {
 				if (this.apareceSoldado == 10) {
 					soldado[i] = new Soldado(entorno.ancho(), 530);
-					
 				}
-				
+
 			}
-			return;
+			return; // Se agrego para evitar que se creen varios objetos soldados a la vez
 		}
-	
 
 	}
 
@@ -299,7 +296,7 @@ public class Juego extends InterfaceJuego {
 		return false;
 	}
 
-	public boolean colisionesPriSol() {
+	public void colisionesPriSol() {
 		for (int i = 0; i < soldado.length; i++) {
 			if (soldado[i] != null) {
 				if (princesa.getX() - princesa.getAncho() / this.dos < soldado[i].getX()
@@ -311,12 +308,10 @@ public class Juego extends InterfaceJuego {
 						&& princesa.getY() + princesa.getAlto() / this.dos > soldado[i].getY()
 								- soldado[i].getLargo() / this.dos) {
 					soldado[i] = null;
-					this.vida--;
-					return true;
+					this.vida--; //resta vida cuando coliciona princesa con soldado
 				}
 			}
 		}
-		return false;
 	}
 
 	public boolean colisionesArmSol() {
@@ -547,22 +542,16 @@ public class Juego extends InterfaceJuego {
 	}
 
 	void contadorVida() {
-		if ( this.princesa.getX() < 0) {
+		if (this.princesa.getX() < 0) {
 			this.vida--;
 			this.princesa.setX(60);
 			this.princesa.setY(450);
-			System.out.println("Estoy aca");
 		}
 		if (this.vida == 0) {
 			this.gameOver = true;
 		}
 	}
 
-	void terminaJuego() {
-		if (!limitePrincesaIzq() && colisionesPriObs()) {
-			this.gameOver = true;
-		}
-	}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
