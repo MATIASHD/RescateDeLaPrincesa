@@ -24,7 +24,7 @@ public class Juego extends InterfaceJuego {
 
 	// Variables y métodos propios de cada grupo
 	// ...
-	/////////////  /////////////////
+	///////////// /////////////////
 	private int dos, tiempoDeVida;
 	private int puntuacion;
 	private int tiempo;
@@ -140,14 +140,11 @@ public class Juego extends InterfaceJuego {
 		colisionesArmSol();
 		colisionesPriSol();
 		colisionesArmObs();
-		colisionesObsSolX();
-		colisionesObsSolY();
 		contadorVida();
 		movimientoPrincess();
 		limiteBolaDeFuego();
 		limiteTiempo();
 		gravedad();
-		//terminaJuego();
 	}
 
 	///////////////////////////////// Obstaculo
@@ -180,15 +177,21 @@ public class Juego extends InterfaceJuego {
 ///////////////////////// Soldado ///////////
 	void posicionSoldado() {
 		for (int i = 0; i < soldado.length; i++) {
-			if (soldado[i] == null) {
-				if (this.apareceSoldado == 10) {
+			if (soldado[i] == null && aparecer()) {
+				if (true) {
 					soldado[i] = new Soldado(entorno.ancho(), 530);
 				}
-
+				return;
 			}
-			return; // Se agrego para evitar que se creen varios objetos soldados a la vez
+			// Se agrego para evitar que se creen varios objetos soldados a la vez
 		}
+	}
 
+	boolean aparecer() {
+		if (this.apareceSoldado == 10) {
+			return true;
+		}
+		return false;
 	}
 
 	void dibujarSoldado() {
@@ -201,13 +204,12 @@ public class Juego extends InterfaceJuego {
 
 	void moverDerechaSol() {
 		for (int i = 0; i < soldado.length; i++) {
-
 			if (soldado[i] != null) {
-				if (!colisionesObsSolX()) {
+				if (!colisionesObsSolX(soldado[i])) {
 					soldado[i].moverDerecha();
 					soldado[i].moverAbajo();
 				} else {
-					if (colisionesObsSolY()) {
+					if (colisionesObsSolY(soldado[i])) {
 						soldado[i].moverArriba();
 						soldado[i].moverDerechaObs();
 					} else {
@@ -308,7 +310,7 @@ public class Juego extends InterfaceJuego {
 						&& princesa.getY() + princesa.getAlto() / this.dos > soldado[i].getY()
 								- soldado[i].getLargo() / this.dos) {
 					soldado[i] = null;
-					this.vida--; //resta vida cuando coliciona princesa con soldado
+					this.vida--; // resta vida cuando coliciona princesa con soldado
 				}
 			}
 		}
@@ -360,47 +362,34 @@ public class Juego extends InterfaceJuego {
 		return false;
 	}
 
-	public boolean colisionesObsSolX() {
-		for (int i = 0; i < soldado.length; i++) {
-			for (int j = 0; j < obstaculo.length; j++) {
-				if (obstaculo[j] != null) {
-					if (soldado[i] != null) {
-						if (obstaculo[j].getX() + obstaculo[j].getAncho() / this.dos > soldado[i].getX()
-								- soldado[i].getLargo() / this.dos
-								&& obstaculo[j].getX() - obstaculo[j].getAncho() / this.dos < soldado[i].getX()
-										+ soldado[i].getLargo() / this.dos) {
-
-							return true;
-						}
-					}
-
+	public boolean colisionesObsSolX(Soldado s) {
+		for (int j = 0; j < obstaculo.length; j++) {
+			if (obstaculo[j] != null) {
+				if (obstaculo[j].getX() + obstaculo[j].getAncho() / this.dos > s.getX() - s.getLargo() / this.dos
+						&& obstaculo[j].getX() - obstaculo[j].getAncho() / this.dos < s.getX()
+								+ s.getLargo() / this.dos) {
+					return true;
 				}
-
 			}
 
 		}
+
 		return false;
 	}
 
-	public boolean colisionesObsSolY() {
-		for (int i = 0; i < soldado.length; i++) {
-			for (int j = 0; j < obstaculo.length; j++) {
-				if (obstaculo[j] != null) {
-					if (soldado[i] != null) {
-						if (obstaculo[j].getY() + obstaculo[j].getLargo() / this.dos > soldado[i].getY()
-								- soldado[i].getAlto() / this.dos
-								&& obstaculo[j].getY() - obstaculo[j].getLargo() / this.dos < soldado[i].getY()
-										+ soldado[i].getAlto() / this.dos) {
+	public boolean colisionesObsSolY(Soldado s) {
 
-							return true;
-						}
-					}
+		for (int j = 0; j < obstaculo.length; j++) {
+			if (obstaculo[j] != null) {
+				if (obstaculo[j].getY() + obstaculo[j].getLargo() / this.dos > s.getY() - s.getAlto() / this.dos
+						&& obstaculo[j].getY() - obstaculo[j].getLargo() / this.dos < s.getY()
+								+ s.getAlto() / this.dos) {
 
+					return true;
 				}
-
 			}
-
 		}
+
 		return false;
 	}
 
@@ -428,8 +417,8 @@ public class Juego extends InterfaceJuego {
 	void limiteDePantallaSol() {
 		for (int i = 0; i < soldado.length; i++) {
 			if (soldado[i] != null) {
-				if (soldado[i].getX() < -20) {
-					soldado[i].setX(800);
+				if (soldado[i].getX() < -5) {
+					soldado[i] = null;
 				}
 			}
 		}
@@ -544,14 +533,13 @@ public class Juego extends InterfaceJuego {
 	void contadorVida() {
 		if (this.princesa.getX() < 0) {
 			this.vida--;
-			this.princesa.setX(60);
-			this.princesa.setY(450);
+			this.princesa.setX(75);
+			this.princesa.setY(400);
 		}
 		if (this.vida == 0) {
 			this.gameOver = true;
 		}
 	}
-
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
